@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+
+    <!--Header nav-->
     <div>
       <b-navbar toggleable="lg" type="dark" variant="dark">
         <b-navbar-brand href="#">
@@ -31,12 +33,16 @@
         </b-collapse>
       </b-navbar>
     </div>
-    <b-container fluid>
+
+    <!-- Center page -->
+    <b-container>
       <main>
         <router-view></router-view>
       </main>
     </b-container>
-  </div>
+
+    <!-- Footer -->
+    
   </div>
 </template>
 

@@ -5,7 +5,25 @@
     <b-container fluid>
       <!-- User Interface controls -->
       <b-row>
-        <b-col offset-md="6" md="6" class="my-1">
+        <b-col md="6" class="my-1">
+          <b-button class="btn-send" v-b-modal.modalPrevent>Create Course</b-button>
+          <b-modal
+            id="modalPrevent"
+            ref="modal"
+            title="Create Course"
+            @ok="handleOk"
+          >
+            <form @submit.stop.prevent="handleSubmit">
+              <label for="name">Name</label><b-form-input type="text" placeholder="Enter the course name" v-model="newItem.name" />
+              <label for="description">Description</label><b-form-input type="text" placeholder="Enter the course description" v-model="newItem.description" />
+              <label for="start">Start date</label><b-form-input type="date" v-model="newItem.start" />
+              <label for="end">End date</label><b-form-input type="date" v-model="newItem.end" />
+              <label for="status">Status</label><b-form-input type="text" v-model="newItem.status" disabled/>
+              <label for="students">Students</label><b-form-input type="number" v-model="newItem.students" />
+            </form>
+          </b-modal>
+        </b-col>
+        <b-col md="6" class="my-1">
           <b-form-group label-cols-sm="3" label="" class="mb-0">
             <b-input-group>
               <b-form-input v-model="filter" placeholder="Type to Search" />
@@ -78,6 +96,9 @@
     data() {
       return {
         items: items,
+        newItem : {
+          status : 'Creada'
+        },
         fields: [
           { key: 'name', label: 'Name', sortDirection: 'desc' },
           { key: 'description', label: 'Description' },
@@ -112,6 +133,20 @@
         // Trigger pagination to update the number of buttons/pages due to filtering
         this.totalRows = filteredItems.length
         this.currentPage = 1
+      },
+      handleOk(evt) {
+        // Prevent modal from closing
+        evt.preventDefault()
+        //if (!this.name) {
+        //  alert('Please enter your name')
+        //} else {
+          this.handleSubmit()
+        //}
+      },
+      handleSubmit() {
+        this.items.push(this.newItem)
+        this.newItem = {}
+        this.$refs.modal.hide()
       }
     }
   }
@@ -123,4 +158,11 @@
     font-weight: bold;
     padding: 15px;
   }
+
+  .btn-send {
+    color: #fff;
+    background-color: #42b983;
+    border-color: #42b983;
+  }
+
 </style>

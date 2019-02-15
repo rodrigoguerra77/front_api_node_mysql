@@ -4,8 +4,10 @@
     <!--Header nav-->
     <div>
       <b-navbar toggleable="lg" type="dark" variant="dark">
-        <b-navbar-brand href="#">
-          <img src="./assets/logo.png" class="logo-icon">
+        <b-navbar-brand>
+          <router-link to="/">
+            <img src="./assets/logo.png" class="logo-icon">
+          </router-link>
         </b-navbar-brand>
 
         <b-navbar-toggle target="nav_collapse" />
@@ -42,7 +44,7 @@
     </b-container>
 
     <!-- Footer -->
-    
+
   </div>
 </template>
 

@@ -7,21 +7,21 @@
       <b-row>
         <b-col md="6" class="my-1">
           <b-button class="btn-send" v-b-modal.modalPrevent>Create Course</b-button>
-          <b-modal
+          <!--<b-modal
             id="modalPrevent"
             ref="modal"
             title="Create Course"
             @ok="handleOk"
           >
             <form @submit.stop.prevent="handleSubmit">
-              <label for="name">Name</label><b-form-input type="text" placeholder="Enter the course name" v-model="newItem.name" />
-              <label for="description">Description</label><b-form-input type="text" placeholder="Enter the course description" v-model="newItem.description" />
-              <label for="start">Start date</label><b-form-input type="date" v-model="newItem.start" />
-              <label for="end">End date</label><b-form-input type="date" v-model="newItem.end" />
-              <label for="status">Status</label><b-form-input type="text" v-model="newItem.status" disabled/>
-              <label for="students">Students</label><b-form-input type="number" v-model="newItem.students" />
+              <label for="name">Name</label><b-form-input type="text" placeholder="Enter the course name" v-model="newItem.courses_name" />
+              <label for="description">Description</label><b-form-input type="text" placeholder="Enter the course description" v-model="newItem.courses_description" />
+              <label for="start">Start date</label><b-form-input type="date" v-model="newItem.courses_start_date" />
+              <label for="end">End date</label><b-form-input type="date" v-model="newItem.courses_final_date" />
+              <label for="status">Status</label><b-form-input type="text" v-model="newItem.status_id" disabled/>
+              <label for="students">Students</label><b-form-input type="number" v-model="newItem.courses_students" />
             </form>
-          </b-modal>
+          </b-modal>-->
         </b-col>
         <b-col md="6" class="my-1">
           <b-form-group label-cols-sm="3" label="" class="mb-0">
@@ -49,6 +49,7 @@
         :filter="filter"
         :sort-direction="sortDirection"
         @filtered="onFiltered"
+        @refreshData="refreshList"
       >
 
         <template slot="row-details" slot-scope="row">
@@ -76,36 +77,25 @@
 </template>
 
 <script>
-  const items = [
-    { status: 'Creada', students: 40, name: 'Vue JS 2', description : 'The Progressive JavaScript Framework', start : '03/03/2019', end : '04/04/2019' },
-    { status: 'Corriendo', students: 21, name: 'Angular JS', description : 'Superheroic JavaScript MVW Framework', start : '10/02/2019', end : '15/03/2019' },
-    { status: 'Finalizada', students: 9, name: 'React JS', description : 'A JavaScript library for building user interfaces', start : '02/01/2019', end : '14/02/2019' },
-    { status: 'Corriendo', students: 89, name: 'Laravel', description : 'The PHP Framework For Web Artisans', start : '10/02/2019', end : '15/03/2019' },
-    { status: 'Creada', students: 38, name: 'Bootstrap', description : 'The most popular HTML, CSS, and JS library in the world', start : '03/03/2019', end : '04/04/2019' },
-    { status: 'Finalizada', students: 27, name: 'Wordpress', description : 'The most powerful CMS', start : '02/01/2019', end : '14/02/2019' },
-    { status: 'Creada', students: 40, name: 'Node JS', description : 'Is an execution environment for JavaScript built with the Chrome V8 JavaScript engine', start : '03/03/2019', end : '04/04/2019' },
-    { status: 'Creada', students: 87, name: 'Mondo DB', description : 'Open Source Document Database', start : '03/03/2019', end : '04/04/2019' },
-    { status: 'Finalizada', students: 26, name: 'MySQL', description : 'It is a relational database management system', start : '02/01/2019', end : '14/02/2019' },
-    { status: 'Corriendo', students: 22, name: 'Postgresql', description : 'The world´s most advanced open source database', start : '10/02/2019', end : '15/03/2019' },
-    { status: 'Creada', students: 38, name: '.NET', description : 'NET is a developer platform with tools and libraries for building any type of app, including web, mobile, desktop, gaming, IoT, cloud, and microservices', start : '03/03/2019', end : '04/04/2019' },
-    { status: 'Finalizada', students: 29, name: 'ASP', description : 'is a Microsoft technology of the "server side" type for dynamically generated web pages', start : '02/01/2019', end : '14/02/2019' }
-  ]
+  import http from "../http-common";
+
+  const items = [];
 
   export default {
     name: 'courses',
     data() {
       return {
         items: items,
-        newItem : {
-          status : 'Creada'
-        },
+        /*newItem : {
+          status_id : 1
+        },*/
         fields: [
-          { key: 'name', label: 'Name', sortDirection: 'desc' },
-          { key: 'description', label: 'Description' },
-          { key: 'start', label: 'Start date', class: 'text-center' },
-          { key: 'end', label: 'End date', class: 'text-center' },
-          { key: 'status', label: 'Status', class: 'text-center' },
-          { key: 'students', label: 'Students', class: 'text-center' }
+          { key: 'courses_name', label: 'Name', sortDirection: 'desc' },
+          { key: 'courses_description', label: 'Description' },
+          { key: 'courses_start_date', label: 'Start date', class: 'text-center' },
+          { key: 'courses_final_date', label: 'End date', class: 'text-center' },
+          { key: 'status_description', label: 'Status', class: 'text-center' },
+          { key: 'courses_students', label: 'Students', class: 'text-center' }
         ],
         currentPage: 1,
         perPage: 5,
@@ -147,7 +137,24 @@
         this.items.push(this.newItem)
         this.newItem = {}
         this.$refs.modal.hide()
+      },
+      retrieveCourses() {
+      http
+        .get("/")
+        .then(response => {
+          this.items = response.data; // JSON are parsed automatically.
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      },
+      refreshList() {
+        this.retrieveCourses();
       }
+    },
+    mounted() {
+      this.retrieveCourses();
     }
   }
 </script>

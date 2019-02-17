@@ -91,7 +91,7 @@
         },*/
         fields: [
           { key: 'courses_name', label: 'Name', sortDirection: 'desc' },
-          { key: 'courses_description', label: 'Description' },
+          { key: 'courses_descrption', label: 'Description' },
           { key: 'courses_start_date', label: 'Start date', class: 'text-center' },
           { key: 'courses_final_date', label: 'End date', class: 'text-center' },
           { key: 'status_description', label: 'Status', class: 'text-center' },

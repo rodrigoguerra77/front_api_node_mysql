@@ -7,21 +7,22 @@
       <b-row>
         <b-col md="6" class="my-1">
           <b-button class="btn-send" v-b-modal.modalPrevent>Create Course</b-button>
-          <!--<b-modal
+          <b-modal
             id="modalPrevent"
             ref="modal"
             title="Create Course"
             @ok="handleOk"
           >
             <form @submit.stop.prevent="handleSubmit">
+              <b-form-input type="text" v-model="newItem.courses_id" disabled/>
               <label for="name">Name</label><b-form-input type="text" placeholder="Enter the course name" v-model="newItem.courses_name" />
-              <label for="description">Description</label><b-form-input type="text" placeholder="Enter the course description" v-model="newItem.courses_description" />
+              <label for="description">Description</label><b-form-input type="text" placeholder="Enter the course description" v-model="newItem.courses_descrption" />
               <label for="start">Start date</label><b-form-input type="date" v-model="newItem.courses_start_date" />
               <label for="end">End date</label><b-form-input type="date" v-model="newItem.courses_final_date" />
-              <label for="status">Status</label><b-form-input type="text" v-model="newItem.status_id" disabled/>
+              <b-form-input type="text" v-model="newItem.status_id" disabled/>
               <label for="students">Students</label><b-form-input type="number" v-model="newItem.courses_students" />
             </form>
-          </b-modal>-->
+          </b-modal>
         </b-col>
         <b-col md="6" class="my-1">
           <b-form-group label-cols-sm="3" label="" class="mb-0">
@@ -86,9 +87,11 @@
     data() {
       return {
         items: items,
-        /*newItem : {
+        submitted: false,
+        newItem : {
+          courses_id : 0,
           status_id : 1
-        },*/
+        },
         fields: [
           { key: 'courses_name', label: 'Name', sortDirection: 'desc' },
           { key: 'courses_descrption', label: 'Description' },
@@ -134,9 +137,31 @@
         //}
       },
       handleSubmit() {
-        this.items.push(this.newItem)
-        this.newItem = {}
+        var data = {
+          courses_id: this.newItem.courses_id,
+          courses_name: this.newItem.courses_name,
+          courses_descrption: this.newItem.courses_descrption,
+          courses_descrption: this.newItem.courses_descrption,
+          courses_start_date: this.newItem.courses_start_date,
+          courses_final_date: this.newItem.courses_final_date,
+          courses_students: this.newItem.courses_students,
+          status_id: this.newItem.status_id,
+        };
+        http
+        .post("/", data)
+        .then(response => {
+          this.items.courses_id = response.data.courses_id;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+
+        this.submitted = true;
+        //this.items.push(this.newItem)
+        //this.newItem = {}
         this.$refs.modal.hide()
+
       },
       retrieveCourses() {
       http

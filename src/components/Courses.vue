@@ -14,12 +14,12 @@
             @ok="handleOk"
           >
             <form @submit.stop.prevent="handleSubmit">
-              <b-form-input type="text" v-model="newItem.courses_id" disabled/>
+              <!--<b-form-input type="text" v-model="newItem.courses_id" disabled/>-->
               <label for="name">Name</label><b-form-input type="text" placeholder="Enter the course name" v-model="newItem.courses_name" />
               <label for="description">Description</label><b-form-input type="text" placeholder="Enter the course description" v-model="newItem.courses_descrption" />
               <label for="start">Start date</label><b-form-input type="date" v-model="newItem.courses_start_date" />
               <label for="end">End date</label><b-form-input type="date" v-model="newItem.courses_final_date" />
-              <b-form-input type="text" v-model="newItem.status_id" disabled/>
+              <!--<b-form-input type="text" v-model="newItem.status_id" disabled/>-->
               <label for="students">Students</label><b-form-input type="number" v-model="newItem.courses_students" />
             </form>
           </b-modal>
@@ -138,14 +138,14 @@
       },
       handleSubmit() {
         var data = {
-          courses_id: this.newItem.courses_id,
+          courses_id: 0,
           courses_name: this.newItem.courses_name,
           courses_descrption: this.newItem.courses_descrption,
           courses_descrption: this.newItem.courses_descrption,
           courses_start_date: this.newItem.courses_start_date,
           courses_final_date: this.newItem.courses_final_date,
           courses_students: this.newItem.courses_students,
-          status_id: this.newItem.status_id,
+          status_id: 1,
         };
         http
         .post("/", data)

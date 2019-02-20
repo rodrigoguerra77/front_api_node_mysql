@@ -110,7 +110,7 @@
       },
       retrieveCourses() {
       http
-        .get("/")
+        .get("/courses/read")
         .then(response => {
           this.items = response.data; // JSON are parsed automatically.
           console.log(response.data);

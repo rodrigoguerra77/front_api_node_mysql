@@ -54,7 +54,7 @@
           status_id: 1,
         };
         http
-        .post("/", data)
+        .post("/courses/create", data)
         .then(response => {
           this.newItem.courses_id = response.data.courses_id;
           console.log(response.data);
